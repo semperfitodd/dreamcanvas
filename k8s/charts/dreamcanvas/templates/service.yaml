@@ -1,0 +1,17 @@
+{{- if .Values.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dreamcanvas.fullname" . }}
+  labels:
+    {{- include "dreamcanvas.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.container.ports.name }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "dreamcanvas.selectorLabels" . | nindent 4 }}
+  {{ end }}

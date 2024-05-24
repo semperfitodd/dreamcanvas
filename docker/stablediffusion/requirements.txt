@@ -1,0 +1,8 @@
+boto3
+diffusers[torch]==0.24.0
+flask
+onnxruntime==1.16.3
+safetensors==0.4.1
+torch==2.1.0+cu118
+transformers==4.35.2
+xformers==0.0.22.post7

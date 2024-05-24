@@ -1,0 +1,83 @@
+apps:
+  stablediffusion:
+    enabled: true
+    namespace: dreamcanvas
+    version: main
+    localChartPath: charts/dreamcanvas
+    values:
+      image:
+        repository: "704855531002.dkr.ecr.us-east-1.amazonaws.com/dreamcanvas_stablediffusion"
+        tag: "4"
+      container:
+        ports:
+          name: dreamcanvas
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        env:
+          NVIDIA_VISIBLE_DEVICES: "all"
+          NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+          S3_BUCKET: "dreamcanvas-dev-app-sk8s"
+      rbac:
+        enabled: false
+      serviceAccount:
+        create: false
+  flaskapp:
+    enabled: true
+    namespace: dreamcanvas
+    version: main
+    localChartPath: charts/dreamcanvas
+    values:
+      image:
+        repository: "704855531002.dkr.ecr.us-east-1.amazonaws.com/dreamcanvas_flaskapp"
+        tag: "12"
+      container:
+        ports:
+          name: dreamcanvas
+          containerPort: 8080
+          protocol: TCP
+      service:
+        enabled: true
+      env:
+        NAMESPACE: "dreamcanvas"
+        DEPLOYMENT_NAME: "stablediffusion-dreamcanvas"
+      ingress:
+        enabled: true
+        className: alb
+        annotations:
+          kubernetes.io/ingress.class: alb
+          alb.ingress.kubernetes.io/ip-address-type: ipv4
+          alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+          alb.ingress.kubernetes.io/scheme: internal
+          alb.ingress.kubernetes.io/target-type: ip
+          alb.ingress.kubernetes.io/actions.expose-to-all: |
+            {
+              "Type": "forward",
+              "ForwardConfig": {
+                "TargetGroups": [
+                  {
+                    "ServiceName": "flaskapp-dreamcanvas",
+                    "ServicePort": "80"
+                  }
+                ]
+              }
+            }
+        hosts:
+          - host: "internal-k8s-dreamcan-flaskapp-8870f4702a-1188503015.us-east-1.elb.amazonaws.com"
+            paths:
+              - path: /
+                pathType: Prefix
+      serviceAccount:
+        create: true
+        automount: true
+      rbac:
+        enabled: true
+        rules:
+          - apiGroups: [ "" ]
+            resources: [ "pods", "pods/exec" ]
+            verbs: [ "get", "list", "create" ]
+          - apiGroups: [ "" ]
+            resources: [ "services" ]
+            verbs: [ "get" ]

@@ -1,0 +1,23 @@
+#  Local .terraform directories
+**/.terraform/*
+
+# Local code directories
+**/build/*
+**/builds/*
+**/node_modules/*
+
+# Huggingface token
+token.txt
+
+# .tfstate static_site
+*.tfstate
+*.tfstate.*
+
+# plan static_site
+plan.out
+*.zip
+
+.idea
+.iml
+
+.DS_Store

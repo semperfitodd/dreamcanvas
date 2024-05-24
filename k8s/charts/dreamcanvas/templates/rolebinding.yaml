@@ -1,0 +1,19 @@
+{{- $app := .Chart.Name -}}
+{{- if .Values.rbac.enabled }}
+{{- $fullName := include "dreamcanvas.fullname" . -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "dreamcanvas.fullname" . }}-rolebinding
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "dreamcanvas.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "dreamcanvas.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "dreamcanvas.fullname" . }}-role
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
