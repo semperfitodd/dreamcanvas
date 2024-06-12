@@ -53,7 +53,7 @@ apps:
           alb.ingress.kubernetes.io/scheme: internal
           alb.ingress.kubernetes.io/target-type: ip
         hosts:
-          - host: "*.execute-api.us-east-1.amazonaws.com"
+          - host: "*.execute-api.*.amazonaws.com"
             paths:
               - path: /
                 pathType: Prefix
