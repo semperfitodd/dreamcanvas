@@ -65,8 +65,7 @@ apps:
               }
             }
         hosts:
-          - host: "internal-k8s-dreamcan-flaskapp-8870f4702a-1188503015.us-east-1.elb.amazonaws.com"
-            paths:
+          - paths:
               - path: /
                 pathType: Prefix
       serviceAccount:
