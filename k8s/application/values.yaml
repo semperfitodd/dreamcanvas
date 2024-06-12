@@ -52,22 +52,16 @@ apps:
           alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
           alb.ingress.kubernetes.io/scheme: internal
           alb.ingress.kubernetes.io/target-type: ip
-          alb.ingress.kubernetes.io/actions.expose-to-all: |
-            {
-              "Type": "forward",
-              "ForwardConfig": {
-                "TargetGroups": [
-                  {
-                    "ServiceName": "flaskapp-dreamcanvas",
-                    "ServicePort": "80"
-                  }
-                ]
-              }
-            }
-        hosts:
-          - paths:
-              - path: /
-                pathType: Prefix
+        rules:
+          - http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: flaskapp-dreamcanvas
+                      port:
+                        number: 80
       serviceAccount:
         create: true
         automount: true
