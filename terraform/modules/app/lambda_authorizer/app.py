@@ -37,14 +37,20 @@ def lambda_handler(event, context):
         cloudfront_ips = fetch_cloudfront_ips()
         logger.info(f"Fetched CloudFront IP ranges: {cloudfront_ips}")
 
+        # Normalize headers to lower case
+        headers = {k.lower(): v for k, v in event['headers'].items()}
+        logger.info(f"Normalized Headers: {headers}")
+
         # Extract the x-forwarded-for header
-        x_forwarded_for = event['headers'].get('x-forwarded-for', '')
+        x_forwarded_for = headers.get('x-forwarded-for', '')
         ip_list = [ip.strip() for ip in x_forwarded_for.split(',')]
         logger.info(f"IP List from x-forwarded-for: {ip_list}")
 
-        # Extract the Origin header
-        origin_header = event['headers'].get('origin', '')
+        # Extract the Origin and Custom headers
+        origin_header = headers.get('origin', '')
+        custom_header = headers.get('x-custom-source', '')
         logger.info(f"Origin Header: {origin_header}")
+        logger.info(f"Custom Header: {custom_header}")
 
         # List of allowed origins (your CloudFront distribution URL)
         allowed_origins = ["https://dreamcanvas.brewsentry.com"]
@@ -52,7 +58,7 @@ def lambda_handler(event, context):
         # Check if the last IP in x-forwarded-for is in the allowed CloudFront IP ranges
         ip_allowed = ip_list and any(
             ipaddress.ip_address(ip_list[-1]) in ipaddress.ip_network(cidr) for cidr in cloudfront_ips)
-        origin_allowed = origin_header in allowed_origins
+        origin_allowed = origin_header in allowed_origins or custom_header == "iOSApp"
 
         if ip_allowed and origin_allowed:
             response["isAuthorized"] = True

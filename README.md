@@ -2,9 +2,9 @@
 
 Dreamcanvas is a project to deploy self-hosted AI, specifically Stable Diffusion, in the cloud using AWS EKS. This repository contains all necessary configurations, including Docker, Kubernetes, Helm charts, and Terraform scripts to set up and manage the infrastructure.
 
-![website.png](images%2Fwebsite.png)
+![website.png](images/website.png)
 
-![generated_image.png](images%2Fgenerated_image.png)
+![generated_image.png](images/generated_image.png)
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
@@ -88,7 +88,7 @@ docker push <AWS_ACCOUNT>.dkr.ecr.<AWS_REGION>.amazonaws.com/dreamcanvas_flaskap
   `Specify the private subnets to which all clients should be given access (one per line):`
 * Save changes and restart server
 
-![openvpn.png](images%2Fopenvpn.png)
+![openvpn.png](images/openvpn.png)
 
 ### 7. Deploy ArgoCD
 Connect to your EKS cluster and deploy ArgoCD. Everything is nested, so running the following in the `master` directory will deploy everything:
@@ -98,7 +98,7 @@ helm template . | kubectl apply -f -
 ```
 ArgoCD will manage itself and other applications.
 
-![argocd.png](images%2Fargocd.png)
+![argocd.png](images/argocd.png)
 
 ## Configurations
 * **Docker:** Ensure `token.txt` contains your Huggingface token.
