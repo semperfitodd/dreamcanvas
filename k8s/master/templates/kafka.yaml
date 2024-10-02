@@ -1,25 +1,43 @@
+{{ range $environment, $values := .Values.appEnvironments }}
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: AppProject
 metadata:
   name: kafka
   namespace: argocd
 spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  description: "Project for Kafka"
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+  sourceRepos:
+    - https://charts.bitnami.com/bitnami
+    - {{ $values.repoUrl }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka-master
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
   destination:
-    namespace: kafka
+    namespace: argocd
     server: https://kubernetes.default.svc
-  project: devops
+  project: kafka
   source:
-    chart: kafka
+    path: k8s/kafka
+    repoURL: {{ $values.repoUrl }}
+    targetRevision: HEAD
     helm:
-      parameters:
-        - name: replicaCount
-          value: '3'
-        - name: zookeeper.replicaCount
-          value: '3'
-        - name: externalAccess.enabled
-          value: 'true'
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 21.1.0
+      valueFiles:
+        - values.yaml
+      {{- with $values }}
+      values: |- {{ toYaml . | nindent 8 }}
+      {{- end }}
   syncPolicy:
     automated:
       prune: true
@@ -30,3 +48,4 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 3m0s
+{{ end }}
