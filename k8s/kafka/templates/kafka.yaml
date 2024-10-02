@@ -24,6 +24,10 @@ spec:
           value: "IP"
         - name: service.type
           value: "LoadBalancer"
+        - name: service.annotations.external-dns.alpha.kubernetes.io/hostname
+          value: "kafka-gameday.brewsentry.com"
+        - name: service.annotations.external-dns.alpha.kubernetes.io/ttl
+          value: "60"
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 30.1.4
   syncPolicy:
