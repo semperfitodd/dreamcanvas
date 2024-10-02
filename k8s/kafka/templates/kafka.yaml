@@ -23,6 +23,16 @@ spec:
         replicaCount: 3
         zookeeper:
           replicaCount: 3
+        listeners:
+          external:
+            type: loadbalancer
+            port: 9092
+            authentication:
+              type: plaintext
+        advertisedListeners:
+          external:
+            host: kafka-gameday.brewsentry.com
+            port: 9092
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 30.1.4
   syncPolicy:
