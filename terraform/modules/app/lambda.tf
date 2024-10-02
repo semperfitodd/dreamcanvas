@@ -25,10 +25,6 @@ module "lambda_function_authorizor" {
   attach_policies = true
   policies        = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole", ]
 
-  #   attach_policy_statements = true
-  #   policy_statements = {
-  #   }
-
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
