@@ -13,7 +13,7 @@ module "dev" {
   app_namespace          = var.company
   company                = var.company
   domain                 = var.domain
-  eks_cluster_version    = "1.30"
+  eks_cluster_version    = "1.31"
   eks_node_instance_type = "g4dn.xlarge"
   environment            = "dev"
   openvpn_sg             = aws_security_group.openvpn.id

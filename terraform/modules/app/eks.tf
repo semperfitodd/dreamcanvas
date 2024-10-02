@@ -33,6 +33,10 @@ module "eks" {
   cluster_ip_family = "ipv4"
 
   cluster_addons = {
+    aws-ebs-csi-driver = {
+      service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
+      most_recent = true
+    }
     coredns = {
       most_recent = true
     }
@@ -121,4 +125,18 @@ resource "aws_iam_policy" "s3_eks" {
   name        = "${var.company}_${var.environment}_s3_eks"
   description = "EKS to S3 put permissions"
   policy      = data.aws_iam_policy_document.s3_eks.json
+}
+
+module "ebs_csi_irsa_role" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name             = "${var.company}_${var.environment}_ebs_csi"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
 }
