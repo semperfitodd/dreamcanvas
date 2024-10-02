@@ -26,7 +26,7 @@ spec:
         listeners:
           client:
             name: CLIENT
-            containerPort: 9092
+            containerPort: 9095
             protocol: PLAINTEXT
             sslClientAuth: ""
           interbroker:
@@ -36,7 +36,7 @@ spec:
             sslClientAuth: ""
           external:
             name: EXTERNAL
-            containerPort: 9095
+            containerPort: 9092
             protocol: PLAINTEXT
             sslClientAuth: ""
           controller:
