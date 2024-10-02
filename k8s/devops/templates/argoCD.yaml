@@ -1,50 +1,50 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: argocd
-  namespace: argocd
-spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  project: devops
-  source:
-    chart: argo-cd
-    repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 7.6.7
-    helm:
-      values: |-
-        global:
-          domain: "argocd-dreamcanvas.{{ .Values.publicDomain }}"
-        configs:
-          cm:
-            create: true
-            url: https://{{ .Values.argoHostname }}
-            admin.enabled: true
-          params:
-            server.insecure: true
-        server:
-          ingress:
-            enabled: true
-            ingressClassName: alb
-            hosts:
-              - {{ .Values.argoHostname }}
-            tls: true
-            annotations:
-              kubernetes.io/ingress.class: alb
-              alb.ingress.kubernetes.io/ip-address-type: ipv4
-              alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-              alb.ingress.kubernetes.io/scheme: internet-facing
-              alb.ingress.kubernetes.io/ssl-redirect: '443'
-              alb.ingress.kubernetes.io/target-type: ip
-              external-dns.alpha.kubernetes.io/hostname: {{ .Values.argoHostname }}
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    retry:
-      limit: 2
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m0s
+{{/*apiVersion: argoproj.io/v1alpha1*/}}
+{{/*kind: Application*/}}
+{{/*metadata:*/}}
+{{/*  name: argocd*/}}
+{{/*  namespace: argocd*/}}
+{{/*spec:*/}}
+{{/*  destination:*/}}
+{{/*    namespace: argocd*/}}
+{{/*    server: https://kubernetes.default.svc*/}}
+{{/*  project: devops*/}}
+{{/*  source:*/}}
+{{/*    chart: argo-cd*/}}
+{{/*    repoURL: https://argoproj.github.io/argo-helm*/}}
+{{/*    targetRevision: 7.6.7*/}}
+{{/*    helm:*/}}
+{{/*      values: |-*/}}
+{{/*        global:*/}}
+{{/*          domain: "argocd-dreamcanvas.{{ .Values.publicDomain }}"*/}}
+{{/*        configs:*/}}
+{{/*          cm:*/}}
+{{/*            create: true*/}}
+{{/*            url: https://{{ .Values.argoHostname }}*/}}
+{{/*            admin.enabled: true*/}}
+{{/*          params:*/}}
+{{/*            server.insecure: true*/}}
+{{/*        server:*/}}
+{{/*          ingress:*/}}
+{{/*            enabled: true*/}}
+{{/*            ingressClassName: alb*/}}
+{{/*            hosts:*/}}
+{{/*              - {{ .Values.argoHostname }}*/}}
+{{/*            tls: true*/}}
+{{/*            annotations:*/}}
+{{/*              kubernetes.io/ingress.class: alb*/}}
+{{/*              alb.ingress.kubernetes.io/ip-address-type: ipv4*/}}
+{{/*              alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'*/}}
+{{/*              alb.ingress.kubernetes.io/scheme: internet-facing*/}}
+{{/*              alb.ingress.kubernetes.io/ssl-redirect: '443'*/}}
+{{/*              alb.ingress.kubernetes.io/target-type: ip*/}}
+{{/*              external-dns.alpha.kubernetes.io/hostname: {{ .Values.argoHostname }}*/}}
+{{/*  syncPolicy:*/}}
+{{/*    automated:*/}}
+{{/*      prune: true*/}}
+{{/*      selfHeal: true*/}}
+{{/*    retry:*/}}
+{{/*      limit: 2*/}}
+{{/*      backoff:*/}}
+{{/*        duration: 5s*/}}
+{{/*        factor: 2*/}}
+{{/*        maxDuration: 3m0s*/}}
