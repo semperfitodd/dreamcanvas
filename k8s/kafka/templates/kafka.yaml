@@ -7,7 +7,7 @@ spec:
   destination:
     namespace: kafka
     server: https://kubernetes.default.svc
-  project: devops
+  project: kafka
   source:
     chart: kafka
     helm:
@@ -16,8 +16,6 @@ spec:
           value: '3'
         - name: zookeeper.replicaCount
           value: '3'
-        - name: externalAccess.enabled
-          value: 'true'
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 21.1.0
   syncPolicy:
