@@ -24,15 +24,26 @@ spec:
         zookeeper:
           replicaCount: 3
         listeners:
-          external:
-            type: loadbalancer
-            port: 9092
-            authentication:
-              type: plaintext
-        advertisedListeners:
-          external:
-            host: kafka-gameday.brewsentry.com
-            port: 9092
+        client:
+          name: CLIENT
+          containerPort: 9092
+          protocol: PLAINTEXT
+          sslClientAuth: ""
+        interbroker:
+          name: INTERNAL
+          containerPort: 9094
+          protocol: PLAINTEXT
+          sslClientAuth: ""
+        external:
+          name: EXTERNAL
+          containerPort: 9095
+          protocol: PLAINTEXT
+          sslClientAuth: ""
+        controller:
+          name: CONTROLLER
+          containerPort: 9093
+          protocol: PLAINTEXT
+          sslClientAuth: ""
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 30.1.4
   syncPolicy:
