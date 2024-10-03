@@ -44,6 +44,8 @@ spec:
             containerPort: 9093
             protocol: PLAINTEXT
             sslClientAuth: ""
+          external:
+            advertised.listeners: PLAINTEXT://localhost:9092
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 30.1.4
   syncPolicy:
