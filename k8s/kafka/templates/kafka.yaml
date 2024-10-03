@@ -44,8 +44,14 @@ spec:
             containerPort: 9093
             protocol: PLAINTEXT
             sslClientAuth: ""
-          external:
-            advertised.listeners: PLAINTEXT://kafka-gameday.brewsentry.com:9092
+          externalAccess:
+          service:
+            type: LoadBalancer
+            ports:
+              external: 9094
+          enabled: true
+          autoDiscovery:
+            enabled: true
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 30.1.4
   syncPolicy:
