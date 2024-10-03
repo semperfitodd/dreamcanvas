@@ -24,9 +24,24 @@ spec:
         zookeeper:
           replicaCount: 3
         listeners:
+          client:
+            name: CLIENT
+            containerPort: 9092
+            protocol: PLAINTEXT
+            sslClientAuth: ""
+          interbroker:
+            name: INTERNAL
+            containerPort: 9094
+            protocol: PLAINTEXT
+            sslClientAuth: ""
           external:
             name: EXTERNAL
-            containerPort: 9092
+            containerPort: 9095
+            protocol: PLAINTEXT
+            sslClientAuth: ""
+          controller:
+            name: CONTROLLER
+            containerPort: 9093
             protocol: PLAINTEXT
             sslClientAuth: ""
     repoURL: https://charts.bitnami.com/bitnami
