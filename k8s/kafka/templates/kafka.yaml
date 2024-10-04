@@ -26,7 +26,7 @@ spec:
           service:
             type: LoadBalancer
             ports:
-              external: 9094
+              external: 9095
           enabled: true
           autoDiscovery:
             enabled: true
