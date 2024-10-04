@@ -33,24 +33,6 @@ spec:
         fullnameOverride: "kafka"
         controller:
           automountServiceAccountToken: true
-          extraConfig: |
-            log.retention.hours=24
-            num.partitions=4
-            default.replication.factor=3
-        livenessProbe:
-          enabled: true
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 10
-          periodSeconds: 30
-          successThreshold: 1
-        readinessProbe:
-          enabled: true
-          initialDelaySeconds: 5
-          failureThreshold: 10
-          timeoutSeconds: 5
-          periodSeconds: 30
-          successThreshold: 1
         listeners:
           client:
             containerPort: 9092
