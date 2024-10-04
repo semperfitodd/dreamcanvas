@@ -7,11 +7,13 @@ spec:
   destination:
     namespace: kafka
     server: https://kubernetes.default.svc
-  project: kafka
+  project: default
   source:
     chart: kafka
     helm:
       values: |-
+        kraft:
+          enabled: true
         service:
           annotations:
             service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
@@ -19,39 +21,66 @@ spec:
             service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "IP"
             external-dns.alpha.kubernetes.io/hostname: "kafka-gameday.brewsentry.com"
             external-dns.alpha.kubernetes.io/ttl: "60"
-          type: "LoadBalancer"
-        replicaCount: 3
-        kraft:
+          replicaCount: 3
+        externalAccess:
+          service:
+            type: LoadBalancer
+            ports:
+              external: 9094
           enabled: true
+          autoDiscovery:
+            enabled: true
+        enabled: true
+        rbac:
+          create: true
+        fullnameOverride: "kafka"
+        livenessProbe:
+          enabled: true
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 10
+          periodSeconds: 30
+          successThreshold: 1
+        readinessProbe:
+          enabled: true
+          initialDelaySeconds: 5
+          failureThreshold: 10
+          timeoutSeconds: 5
+          periodSeconds: 30
+          successThreshold: 1
         listeners:
           client:
-            name: CLIENT
             containerPort: 9092
             protocol: PLAINTEXT
-            sslClientAuth: ""
-          interbroker:
-            name: INTERNAL
-            containerPort: 9094
-            protocol: PLAINTEXT
-            sslClientAuth: ""
-          external:
-            name: EXTERNAL
-            containerPort: 9095
-            protocol: PLAINTEXT
+            name: CLIENT
             sslClientAuth: ""
           controller:
             name: CONTROLLER
             containerPort: 9093
             protocol: PLAINTEXT
             sslClientAuth: ""
-          externalAccess:
-          service:
-            type: LoadBalancer
-            ports:
-              external: 9092
+          interbroker:
+            containerPort: 9094
+            protocol: PLAINTEXT
+            name: INTERNAL
+            sslClientAuth: ""
+          external:
+            containerPort: 9095
+            protocol: PLAINTEXT
+            name: EXTERNAL
+            sslClientAuth: ""
+        kraft:
           enabled: true
-          autoDiscovery:
-            enabled: true
+        zookeeper:
+          enabled: false
+        rbac:
+          create: true
+        controller:
+          automountServiceAccountToken: true
+        broker:
+          automountServiceAccountToken: true
+        zookeeper:
+          enabled: false
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 30.1.4
   syncPolicy:
