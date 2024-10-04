@@ -23,26 +23,26 @@ spec:
         replicaCount: 3
         zookeeper:
           replicaCount: 3
-        listeners:
+          listeners:
           client:
-            name: CLIENT
-            containerPort: 9095
-            protocol: PLAINTEXT
-            sslClientAuth: ""
-          interbroker:
-            name: INTERNAL
-            containerPort: 9094
-            protocol: PLAINTEXT
-            sslClientAuth: ""
-          external:
-            name: EXTERNAL
             containerPort: 9092
             protocol: PLAINTEXT
+            name: CLIENT
             sslClientAuth: ""
           controller:
             name: CONTROLLER
             containerPort: 9093
             protocol: PLAINTEXT
+            sslClientAuth: ""
+          interbroker:
+            containerPort: 9094
+            protocol: PLAINTEXT
+            name: INTERNAL
+            sslClientAuth: ""
+          external:
+            containerPort: 9095
+            protocol: PLAINTEXT
+            name: EXTERNAL
             sslClientAuth: ""
         externalAccess:
           service:
