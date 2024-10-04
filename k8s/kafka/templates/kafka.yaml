@@ -44,14 +44,6 @@ spec:
             containerPort: 9093
             protocol: PLAINTEXT
             sslClientAuth: ""
-          externalAccess:
-          service:
-            type: LoadBalancer
-            ports:
-              external: 9092
-          enabled: true
-          autoDiscovery:
-            enabled: true
         externalAccess:
           service:
             type: LoadBalancer
@@ -60,6 +52,12 @@ spec:
           enabled: true
           autoDiscovery:
             enabled: true
+        rbac:
+            create: true
+          controller:
+            automountServiceAccountToken: true
+          broker:
+            automountServiceAccountToken: true
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 30.1.4
   syncPolicy:
