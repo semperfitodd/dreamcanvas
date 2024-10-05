@@ -13,6 +13,7 @@ rules:
   resources:
   - pods
   - pods/log
+  - pods/attach
   verbs:
   - create
   - get
