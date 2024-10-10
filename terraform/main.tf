@@ -8,9 +8,6 @@ module "dev" {
     flaskapp = {
       description = "Flask API"
     }
-    kafka_producer = {
-      description = "Kafka Producer for Gameday"
-    }
   }
 
   app_namespace          = var.company
